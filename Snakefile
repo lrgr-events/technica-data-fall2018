@@ -33,6 +33,7 @@ rule cell_lines:
         m = join(DATA_DIR, 'raw/CCLE_mutation_data.txt'),
         e = join(DATA_DIR, 'raw/CCLE_RNAseq_RPKM_data.gct'),
         dr = join(DATA_DIR, 'raw/gcsi_drug_response.csv'),
+        ccle = join(DATA_DIR, 'raw/CCLE_metadata.csv')
 
     output:
         CELL_LINE_LIST
@@ -42,6 +43,7 @@ rule cell_lines:
             -dr {input.dr} \
             -m {input.m} \
             -e {input.e} \
+            -ccle {input.ccle} \
             -o {output}
         '''
 
