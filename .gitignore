@@ -1,4 +1,5 @@
 .snakemake/
 data/
 .ipynb_checkpoints/
+.vscode/
 *.swp
