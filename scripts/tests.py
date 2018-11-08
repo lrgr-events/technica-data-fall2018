@@ -10,10 +10,9 @@ class TestALL(unittest.TestCase):
 
     def test_CCLE_info(self):
         ccle_info = CCLE_Info('../data/raw/CCLE_metadata.csv')
-        self.assertEqual(ccle_info.broad_id_2_ccle_name('ACH-000001'), 'NIHOVCAR3_OVARY')
-        self.assertEqual(ccle_info.ccle_name_2_broad_id('NIHOVCAR3_OVARY'),'ACH-000001' )
-
-    
+        self.assertEqual(ccle_info.split_ccle_name('NIHOVCAR3_OVARY'), ('NIHOVCAR3','OVARY'))
+        self.assertEqual(ccle_info.broad_id_2_ccle_name('ACH-000001'), 'NIHOVCAR3')
+        self.assertEqual(ccle_info.ccle_name_2_broad_id('NIHOVCAR3'),'ACH-000001' )    
 
 if __name__ == '__main__':
     unittest.main()

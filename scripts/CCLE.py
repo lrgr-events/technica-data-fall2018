@@ -7,8 +7,15 @@ class CCLE_Info(object):
         self.df = pd.read_csv(ccle_meta_file, header=0)
         self.broad_ids = list(self.df['DepMap_ID'])
         self.ccle_names = list(self.df['CCLE_Name'])
+        self.ccle_names = [self.split_ccle_name(n)[0] for n in self.ccle_names]
         self._broad2ccle = dict(zip(self.broad_ids, self.ccle_names))
         self._ccle2broad = dict(zip(self.ccle_names, self.broad_ids))
+    
+    def split_ccle_name(self, ccle_name):
+        l = ccle_name.split('_')
+        ccle_name_only = l[0]
+        tissue_type = '_'.join(l[1:])
+        return (ccle_name_only, tissue_type)
 
     def broad_id_2_ccle_name(self, broad_id):
         '''
