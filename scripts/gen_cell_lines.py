@@ -4,11 +4,11 @@ import pandas as pd
 
 def parse_args():
     parser = ArgumentParser()
-    parser.add_argument('-ccle', '--ccle_info')
-    parser.add_argument('-dr', '--drug_response_data')
-    parser.add_argument('-e', '--expression_data')
-    parser.add_argument('-m', '--mutation_data')
-    parser.add_argument('-o','--output')
+    parser.add_argument('-ccle', '--ccle_info', required=True)
+    parser.add_argument('-dr', '--drug_response_data', required=True)
+    parser.add_argument('-e', '--expression_data', required=True)
+    parser.add_argument('-m', '--mutation_data', required=True)
+    parser.add_argument('-o','--output', required=True)
     return parser.parse_args()
 
 def drug_response_cell(fp):

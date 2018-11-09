@@ -22,6 +22,9 @@ DATA_FILES = expand(DATA_TEMPLATE, filename=FILES_TO_URLS.keys())
 #### OUTPUTS
 OUTPUT_DIR = join(DATA_DIR, 'processed')
 CELL_LINE_LIST = join(OUTPUT_DIR, 'cell_line_list.tsv')
+ONCOKB_SUMMARY = join(OUTPUT_DIR, 'oncoKB_summary.txt')
+ONCOGENES = join(OUTPUT_DIR, 'oncogenes.tsv')
+
 
 rule all:
     input:
@@ -45,6 +48,18 @@ rule cell_lines:
             -e {input.e} \
             -ccle {input.ccle} \
             -o {output}
+        '''
+
+rule oncogenes:
+    input:
+        join(DATA_DIR, 'raw/oncoKB/allAnnotatedVariants.txt')
+    output:
+        summary=ONCOKB_SUMMARY,
+        tsv=ONCOGENES
+    shell:
+        '''
+        python scripts/gen_oncogenes.py \
+            -i {input} -o {output.tsv} -s {output.summary}
         '''
 
 #### DOWNLOAD RAW DATA
