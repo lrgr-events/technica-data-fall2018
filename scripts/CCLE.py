@@ -43,8 +43,8 @@ class CCLE_Info(object):
         raise NotImplementedError
 
     @classmethod
-    def read_cell_lines(cls, file):
-        with open(file, 'w') as IN:
-            cell_lines = [line for line in IN]
+    def read_cell_lines(cls, fp):
+        with open(fp, 'r') as IN:
+            cell_lines = [line.split()[0] for line in IN]
         return cell_lines
         

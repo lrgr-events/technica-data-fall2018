@@ -24,13 +24,18 @@ OUTPUT_DIR = join(DATA_DIR, 'processed')
 CELL_LINE_LIST = join(OUTPUT_DIR, 'cell_line_list.tsv')
 ONCOKB_SUMMARY = join(OUTPUT_DIR, 'oncoKB_summary.txt')
 ONCOGENES = join(OUTPUT_DIR, 'oncogenes.tsv')
-
+EXPRESSION = join(OUTPUT_DIR, 'gene_expression.tsv')
 
 rule all:
     input:
-        DATA_FILES,
-        CELL_LINE_LIST
+        CELL_LINE_LIST,
+        ONCOGENES,
+        ONCOKB_SUMMARY,
+        EXPRESSION
 
+rule download:
+    input:
+        DATA_FILES
 rule cell_lines:
     input:
         m = join(DATA_DIR, 'raw/CCLE_mutation_data.txt'),
@@ -49,7 +54,19 @@ rule cell_lines:
             -ccle {input.ccle} \
             -o {output}
         '''
-
+rule expression:
+    input:
+        cell_lines=CELL_LINE_LIST,
+        rpkm=join(DATA_DIR, 'raw/CCLE_RNAseq_RPKM_data.gct'),
+    output:
+        EXPRESSION
+    shell:
+        '''
+        python scripts/gen_expression_data.py \
+            -i {input.rpkm} \
+            -cl {input.cell_lines} \
+            -o {output}
+        '''
 rule oncogenes:
     input:
         join(DATA_DIR, 'raw/oncoKB/allAnnotatedVariants.txt')
