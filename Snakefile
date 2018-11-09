@@ -25,6 +25,7 @@ CELL_LINE_LIST = join(OUTPUT_DIR, 'cell_line_list.tsv')
 ONCOKB_SUMMARY = join(OUTPUT_DIR, 'oncoKB_summary.txt')
 ONCOGENES = join(OUTPUT_DIR, 'oncogenes.tsv')
 EXPRESSION = join(OUTPUT_DIR, 'gene_expression.tsv')
+MUTATIONS = join(OUTPUT_DIR, 'mutations.tsv')
 
 rule all:
     input:
@@ -78,6 +79,23 @@ rule oncogenes:
         python scripts/gen_oncogenes.py \
             -i {input} -o {output.tsv} -s {output.summary}
         '''
+
+rule mutations:
+    input:
+        mut=join(DATA_DIR, 'raw/CCLE_mutation_data.txt'),
+        cell_lines=CELL_LINE_LIST,
+        ccle = join(DATA_DIR, 'raw/CCLE_metadata.csv')
+    output:
+        MUTATIONS
+    shell:
+        '''
+        python scripts/gen_mutation_data.py \
+            -i {input.mut} \
+            -cl {input.cell_lines} \
+            -ccle {input.ccle} \
+            -o {output}
+        '''
+
 
 #### DOWNLOAD RAW DATA
 rule download_one:
