@@ -11,6 +11,7 @@ class CCLE_Info(object):
         self._broad2ccle = dict(zip(self.broad_ids, self.ccle_names))
         self._ccle2broad = dict(zip(self.ccle_names, self.broad_ids))
     
+    @classmethod
     def split_ccle_name(self, ccle_name):
         l = ccle_name.split('_')
         ccle_name_only = l[0]
@@ -40,4 +41,10 @@ class CCLE_Info(object):
         Return dictionary of info given ccle_name
         '''
         raise NotImplementedError
+
+    @classmethod
+    def read_cell_lines(cls, file):
+        with open(file, 'w') as IN:
+            cell_lines = [line for line in IN]
+        return cell_lines
         

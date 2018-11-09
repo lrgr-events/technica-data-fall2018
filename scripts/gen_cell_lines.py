@@ -15,12 +15,12 @@ def drug_response_cell(fp):
     df = pd.read_csv(fp,header = 0, sep = ',')
     return set(df.Cell_Line)
 
-def expression_cell(fp, ccle):
+def expression_cell(fp):
     df = pd.read_csv(fp,sep = '\t', header=0, skiprows = range(0,2))
     cells = list(df.columns)
     cells.remove('Name')
     cells.remove('Description')
-    cell_lines = [ccle.split_ccle_name(n)[0] for n in cells]
+    cell_lines = [CCLE_Info.split_ccle_name(n)[0] for n in cells]
     return set(cell_lines)
 
 def mutation_cell(fp, ccle):
@@ -34,8 +34,8 @@ def mutation_cell(fp, ccle):
 def main():
     args = parse_args()
     ccle = CCLE_Info(args.ccle_info)
-    dr_genes = drug_response_cell(args.drug_response_data, )
-    e_genes = expression_cell(args.expression_data, ccle)
+    dr_genes = drug_response_cell(args.drug_response_data )
+    e_genes = expression_cell(args.expression_data)
     m_genes = mutation_cell(args.mutation_data, ccle)
 
     genes = dr_genes
