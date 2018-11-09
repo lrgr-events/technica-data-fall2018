@@ -54,7 +54,8 @@ rule all:
         ONCOGENES,
         ONCOKB_SUMMARY,
         EXPRESSION,
-        MUTATIONS
+        MUTATIONS,
+        DRUG_RESPONSE_FILES
 
 rule download:
     input:
