@@ -1,14 +1,22 @@
-# Data for Technica 2018, Computational Biology research project
+# Technica data - Computational Discovery of Molecular Markers for Drug Response in Cancer
 
-Install environment with:
+## About
+This repo contains scripts to download and process data from the  [Cancer Cell Line Encyclopedia](https://portals.broadinstitute.org/ccle/) and the [Genentech Cell Line Screening Initiative](http://www.grcalculator.org/grbrowser/) for the 'Computational Discovery of Molecular Markers for Drug Response in Cancer' workshop at Tech + Research at [Technica 2018](https://gotechnica.org/).
 
-    conda env create -f environment.yml
+## Usage
+This repo requires `conda`.
+Install and activate the conda environment with:
 
-Activate environment with:
-    
-    conda activate technica-data
+	conda env create -f environment.yml
+	conda activate technica-data
 
-Download and process raw data with:
-    
-    snakemake all
-    
+Download and process raw data from [Cancer Cell Line Encyclopedia](https://portals.broadinstitute.org/ccle/):
+
+	snakemake all
+	 
+## Data
+Please find processed data in `data/processed/` which will contain:
+- `cell_line_list.tsv` : a list of cell lines from [Cancer Cell Line Encyclopedia](https://portals.broadinstitute.org/ccle/) used for our workshop
+- `gene_expression.tsv`: gene expression data for each of the cell lines
+- `mutations.tsv`: gene mutation data for each of the cell lines
+- `drug_response/`: drug response data for each of the cell lines for each of the 16 drugs
