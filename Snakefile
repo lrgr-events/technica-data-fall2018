@@ -27,12 +27,34 @@ ONCOGENES = join(OUTPUT_DIR, 'oncogenes.tsv')
 EXPRESSION = join(OUTPUT_DIR, 'gene_expression.tsv')
 MUTATIONS = join(OUTPUT_DIR, 'mutations.tsv')
 
+DR_DIR = join(OUTPUT_DIR, 'drug_response')
+DRUG_NAMES = [
+    'doxorubicin', 
+    'erlotinib', 
+    'gemcitabine', 
+    'bid1870', 
+    'bortezomib', 
+    'irinotecan', 
+    'lapatinib', 
+    'gdc0941', 
+    'rapamycin', 
+    'pd0325901', 
+    'docetaxel', 
+    'ms275', 
+    'vorinostat', 
+    'thapsigargin', 
+    'paclitaxel', 
+    'crizotinib']
+DR_TEMPLATE = join(DR_DIR, '{drug}.tsv')
+DRUG_RESPONSE_FILES = expand(DR_TEMPLATE, drug=DRUG_NAMES)
+
 rule all:
     input:
         CELL_LINE_LIST,
         ONCOGENES,
         ONCOKB_SUMMARY,
-        EXPRESSION
+        EXPRESSION,
+        MUTATIONS
 
 rule download:
     input:
@@ -94,6 +116,23 @@ rule mutations:
             -cl {input.cell_lines} \
             -ccle {input.ccle} \
             -o {output}
+        '''
+
+rule drug_responses:
+    input:
+        cell_lines=CELL_LINE_LIST,
+        drug_response_data=join(DATA_DIR,'raw/gcsi_drug_response.csv')
+    params:
+        drugs = DRUG_NAMES
+    output:
+        DRUG_RESPONSE_FILES
+    shell:
+        '''
+        python scripts/gen_drug_response.py \
+            -i {input.drug_response_data} \
+            -cl {input.cell_lines} \
+            -os {output} \
+            -ds {params.drugs}
         '''
 
 
