@@ -3,4 +3,6 @@ data/
 .ipynb_checkpoints/
 .vscode/
 *.swp
+*.tsv
+*.txt
 __pycache__/

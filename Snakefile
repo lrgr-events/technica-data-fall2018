@@ -25,7 +25,10 @@ CELL_LINE_LIST = join(OUTPUT_DIR, 'cell_line_list.tsv')
 ONCOKB_SUMMARY = join(OUTPUT_DIR, 'oncoKB_summary.txt')
 ONCOGENES = join(OUTPUT_DIR, 'oncogenes.tsv')
 EXPRESSION = join(OUTPUT_DIR, 'gene_expression.tsv')
-MUTATIONS = join(OUTPUT_DIR, 'mutations.tsv')
+BOTH_MUTATIONS = join(OUTPUT_DIR, 'nonsense_and_missense_mutations.tsv')
+MISSENSE_MUTATIONS = join(OUTPUT_DIR, 'missense_mutations.tsv')
+NONSENSE_MUTATIONS = join(OUTPUT_DIR, 'nonsense_mutations.tsv')
+
 
 DR_DIR = join(OUTPUT_DIR, 'drug_response')
 DRUG_NAMES = [
@@ -54,7 +57,9 @@ rule all:
         ONCOGENES,
         ONCOKB_SUMMARY,
         EXPRESSION,
-        MUTATIONS,
+        BOTH_MUTATIONS,
+        MISSENSE_MUTATIONS,
+        NONSENSE_MUTATIONS,
         DRUG_RESPONSE_FILES
 
 rule download:
@@ -109,14 +114,18 @@ rule mutations:
         cell_lines=CELL_LINE_LIST,
         ccle = join(DATA_DIR, 'raw/CCLE_metadata.csv')
     output:
-        MUTATIONS
+        combined=BOTH_MUTATIONS,
+        nonsense=NONSENSE_MUTATIONS,
+        missense=MISSENSE_MUTATIONS
     shell:
         '''
         python scripts/gen_mutation_data.py \
             -i {input.mut} \
             -cl {input.cell_lines} \
             -ccle {input.ccle} \
-            -o {output}
+            -co {output.combined} \
+            -no {output.nonsense} \
+            -mo {output.missense}
         '''
 
 rule drug_responses:
